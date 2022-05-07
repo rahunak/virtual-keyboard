@@ -116,15 +116,7 @@ const first = [
     metaKey: false,
     secondValue: '+',
   },
-  {
-    key: '\\',
-    code: 'Backslash',
-    ctrlKey: false,
-    shiftKey: false,
-    altKey: false,
-    metaKey: false,
-    secondValue: '/',
-  },
+
   {
     key: 'Backspace',
     code: 'Backspace',
@@ -240,8 +232,17 @@ const second = [
     metaKey: false,
   },
   {
-    key: 'Enter',
-    code: 'Enter',
+    key: '\\',
+    code: 'Backslash',
+    ctrlKey: false,
+    shiftKey: false,
+    altKey: false,
+    metaKey: false,
+    secondValue: '/',
+  },
+  {
+    key: 'Delete',
+    code: 'Delete',
     ctrlKey: false,
     shiftKey: false,
     altKey: false,
@@ -444,6 +445,14 @@ const fourth = [
     metaKey: false,
   },
   {
+    key: 'ArrowUp',
+    code: 'ArrowUp',
+    ctrlKey: false,
+    shiftKey: false,
+    altKey: false,
+    metaKey: false,
+  },
+  {
     key: 'Shift',
     code: 'ShiftRight',
     ctrlKey: false,
@@ -486,24 +495,30 @@ const fifth = [
     metaKey: false,
   },
   {
-    key: 'AltGraph',
+    key: 'Alt',
     code: 'AltRight',
+    ctrlKey: false,
+    shiftKey: false,
+    altKey: true,
+    metaKey: false,
+  },
+  {
+    key: 'ArrowLeft',
+    code: 'ArrowLeft',
     ctrlKey: false,
     shiftKey: false,
     altKey: false,
     metaKey: false,
-  },
-  {
-    key: 'Meta',
-    code: 'MetaRight',
+  }, {
+    key: 'ArrowDown',
+    code: 'ArrowDown',
     ctrlKey: false,
     shiftKey: false,
     altKey: false,
-    metaKey: true,
-  },
-  {
-    key: 'ContextMenu',
-    code: 'ContextMenu',
+    metaKey: false,
+  }, {
+    key: 'ArrowRight',
+    code: 'ArrowRight',
     ctrlKey: false,
     shiftKey: false,
     altKey: false,
@@ -518,7 +533,7 @@ const fifth = [
     metaKey: false,
   },
 ];
-const keys = {
+const keys = [
   first, second, third, fourth, fifth,
-};
+];
 export default keys;
