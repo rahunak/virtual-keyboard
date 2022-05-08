@@ -1,14 +1,12 @@
 /* eslint-disable no-console */
 // eslint-disable-next-line consistent-return
 import {
-  keyDownHandler, keyUpHandler, mouseDownHandler, mouseUpHandler,
+  keyDownHandler, keyUpHandler, mouseDownHandler, mouseUpHandler, keyboardToUpperCase,
 } from './handlers';
 
-import isFn from './helpers';
+import { isFn } from './helpers';
 import en from './keysEN';
 import ru from './keysRU';
-
-console.log('localStorage.getItem()', localStorage.getItem('lang'));
 
 function createElement(elem, innerText, classes, attr, attrValue = null) {
   try {
@@ -26,7 +24,28 @@ document.body.append(createElement('h1', 'RSS Виртуальная клави�
 document.body.append(createElement('textarea', null, 'main__textarea', 'id', 'textatea'));
 document.body.append(createElement('p', 'Смена языка Shift + Ctrl'));
 
-function init(lang) {
+function changeLanguageInLocalStorage() {
+  console.log('меняю язык. был', localStorage);
+  if (localStorage.lang === 'en') {
+    localStorage.setItem('lang', 'ru');
+    console.log('стал', localStorage);
+  } else if (localStorage.lang === 'ru') {
+    localStorage.setItem('lang', 'en');
+    console.log('стал', localStorage);
+  }
+}
+
+function createMarkup() {
+  let lang;
+  if (localStorage.lang) {
+    if (localStorage.lang === 'ru') {
+      lang = ru;
+    } else if (localStorage.lang === 'en') {
+      lang = en;
+    }
+  } else {
+    lang = en;
+  }
   document.body.append(createElement('div', null, 'keyboard'));
   const arrKeys = lang.flat(1);
   arrKeys.map((el) => {
@@ -46,43 +65,40 @@ function init(lang) {
     document.querySelector('.keyboard').append(markupElement);
   });
 }
-function changeLanguage() {
-  if (localStorage.lang === 'en') {
-    localStorage.setItem('lang', 'ru');
-    init(ru);
-  } else if (localStorage.lang === 'ru') {
-    localStorage.setItem('lang', 'en');
-    init(en);
-  }
-}
-console.log('перед запуском', typeof localStorage.getItem('lang'), ' =', typeof ru);
 
-(function lookAtChangeLanguage() {
+function changeLanguage() {
   const pressedKeys = new Set();
-  const leftKeysForChangeLanguage = ['Shift', 'Control'];
+  const keysForChangingLanguage = ['Shift', 'Control'];
+
   document.addEventListener('keydown', (event) => {
-    console.log(event);
     pressedKeys.add(event.key);
     // eslint-disable-next-line no-restricted-syntax
-    for (const key of leftKeysForChangeLanguage) {
+    for (const key of keysForChangingLanguage) {
       if (!pressedKeys.has(key)) {
         return;
       }
     }
     pressedKeys.clear();
+    changeLanguageInLocalStorage();
     document.querySelector('.keyboard').remove();
-    changeLanguage();
-    console.log('<<<---change language Function --->>> ');
+    createMarkup();
   });
   document.addEventListener('keyup', (event) => {
     pressedKeys.delete(event.key);
   });
-}());
+}
+
+function init() {
+  createMarkup();
+  changeLanguage();
+}
+
 document.addEventListener('keydown', keyDownHandler);
 document.addEventListener('keyup', keyUpHandler);
 document.addEventListener('mousedown', mouseDownHandler);
 document.addEventListener('mouseup', mouseUpHandler);
 
-let lang = localStorage.getItem('lang');
-console.log('localStorage.lang', lang);
-init(lang = localStorage.setItem('lang', 'en') || en);
+console.log('localStorage.lang перед запуском init', localStorage.lang);
+init();
+
+document.querySelector('[data="ShiftRight"]').addEventListener('click', keyboardToUpperCase);
