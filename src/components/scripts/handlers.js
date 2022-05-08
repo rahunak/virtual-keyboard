@@ -1,4 +1,5 @@
-import { isFn, isFnValue } from './helpers';
+/* eslint-disable no-console */
+import { isFnValue } from './helpers';
 
 function pressBtn(val) {
   if (val === 'Enter') {
@@ -37,12 +38,18 @@ export function mouseDownHandler(e) {
     console.error('Это не ошибка,происходит обработка события  mouseDownHandler');
   }
 }
-function keyboardToUpperCase() {
+export function keyboardToUpperCase() {
   try {
-    const btns = document.getElementsByClassName('btn');
-    const newBtns = Array.from(btns).filter((el) => !el.classList.contains('fn'));
-    newBtns.forEach((el) => el.textContent.toUpperCase());
-    console.log('newBtns', newBtns);
+    console.log('keyboardToUpperCase');
+    document.querySelectorAll('[key="key"]').forEach((el) => {
+      // eslint-disable-next-line no-restricted-syntax
+      for (const child of el.children) {
+        if (!child.classList.contains('hidden')) {
+          child.querySelector('.caseDown').classList.toggle('hidden');
+          child.querySelector('.caseUp').classList.toggle('hidden');
+        }
+      }
+    });
   } catch {
     console.error('Ошибка тут keyboardToUpperCase');
   }
@@ -50,19 +57,27 @@ function keyboardToUpperCase() {
 
 export function keyDownHandler(e) {
   try {
-    e.preventDefault();
-    keyboardToUpperCase();
+    if (e.repeat) return;
+    console.log('keyDownHandler');
     const currEl = document.querySelector(`[data=${e.code}]`);
     currEl.classList.add('btn_active');
+    if ((e.key === 'Shift' && !e.repeat) || (e.key === 'CapsLock')) {
+      keyboardToUpperCase();
+    }
     pressBtn(e.code);
     pressArrow(e.code);
-    if (!isFn(e) && e.key !== 'Control' && e.key !== 'Alt') { document.querySelector('.main__textarea').value += currEl.innerText; }
+    if (!isFnValue(e.code)) { document.querySelector('.main__textarea').value += currEl.innerText; }
   } catch {
     console.error('Хватит нажимать кнопки, которых нет на моей Кавиатуре!');
   }
 }
 export function keyUpHandler(e) {
   try {
+    if (e.key === 'Shift') {
+      // Удивлён что при отпускании  shiftKey===false
+      keyboardToUpperCase();
+    }
+    console.log('keyUpHandler');
     document.querySelector(`[data=${e.code}]`).classList.remove('btn_active');
   } catch {
     console.error('Хватит отпускать кнопки, которых нет на моей Кавиатуре!');
