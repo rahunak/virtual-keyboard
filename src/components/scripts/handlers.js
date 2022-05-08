@@ -1,29 +1,61 @@
 import { isFn, isFnValue } from './helpers';
 
+function pressBtn(val) {
+  if (val === 'Enter') {
+    document.querySelector('.main__textarea').value += '\n';
+  } else if (val === 'Space' || val === '') {
+    document.querySelector('.main__textarea').value += ' ';
+  } else if (val === 'Tab') {
+    document.querySelector('.main__textarea').value += '\t';
+  } else if (val === 'Del' || val === 'Delete' || val === 'Backspace') {
+    document.querySelector('.main__textarea').value = document.querySelector('.main__textarea').value.slice(0, document.querySelector('.main__textarea').value.length - 1);
+  }
+}
+
+function pressArrow(val) {
+  if (val === 'ArrowDown') {
+    document.querySelector('.main__textarea').value += '\u2BC6';
+  }
+  if (val === 'ArrowLeft') {
+    document.querySelector('.main__textarea').value += '\u2BC7';
+  }
+  if (val === 'ArrowRight') {
+    document.querySelector('.main__textarea').value += '\u2BC8';
+  }
+  if (val === 'ArrowUp') {
+    document.querySelector('.main__textarea').value += '\u2BC5';
+  }
+}
+
 export function mouseDownHandler(e) {
   try {
     const currValue = e.target.closest('.btn').innerText;
-    console.log(currValue);
+    pressBtn(currValue);
+
     if (!isFnValue(currValue)) { document.querySelector('.main__textarea').value += currValue; }
   } catch {
-    // console.error('Да ладно,ты прикалываешься,  ошибка ?!?');
+    console.error('Это не ошибка,происходит обработка события  mouseDownHandler');
   }
 }
-export function mouseUpHandler(e) {
+function keyboardToUpperCase() {
   try {
-    const el = e.target.closest('.btn').innerText.length;
+    const btns = document.getElementsByClassName('btn');
+    const newBtns = Array.from(btns).filter((el) => !el.classList.contains('fn'));
+    newBtns.forEach((el) => el.textContent.toUpperCase());
+    console.log('newBtns', newBtns);
   } catch {
-    // console.error('Да ладно,ты прикалываешься,  ошибка ?!?');
+    console.error('Ошибка тут keyboardToUpperCase');
   }
 }
 
 export function keyDownHandler(e) {
   try {
-    console.log(e);
     e.preventDefault();
+    keyboardToUpperCase();
     const currEl = document.querySelector(`[data=${e.code}]`);
     currEl.classList.add('btn_active');
-    // Баг с клавишей AltGraph выводит ControlLeft вне моего массива клавиш
+    pressBtn(e.code);
+    pressArrow(e.code);
     if (!isFn(e) && e.key !== 'Control' && e.key !== 'Alt') { document.querySelector('.main__textarea').value += currEl.innerText; }
   } catch {
     console.error('Хватит нажимать кнопки, которых нет на моей Кавиатуре!');
@@ -35,8 +67,4 @@ export function keyUpHandler(e) {
   } catch {
     console.error('Хватит отпускать кнопки, которых нет на моей Кавиатуре!');
   }
-}
-export function keyboardToUpperCase() {
-  const btns = document.getElementsByClassName('btn');
-  console.log(btns);
 }

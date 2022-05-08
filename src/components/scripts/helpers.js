@@ -7,3 +7,5 @@ export function isFnValue(val) {
   }
   return false;
 }
+export function isDelete(el) { return el.code === 'Delete'; }
+export function isArrow(el) { return !!(el.code === 'ArrowUp' || el.code === 'ArrowLeft' || el.code === 'ArrowDown' || el.code === 'ArrowRight'); }
