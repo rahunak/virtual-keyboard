@@ -40,7 +40,6 @@ export function mouseDownHandler(e) {
 }
 export function keyboardToUpperCase() {
   try {
-    console.log('keyboardToUpperCase');
     document.querySelectorAll('[key="key"]').forEach((el) => {
       // eslint-disable-next-line no-restricted-syntax
       for (const child of el.children) {
@@ -57,8 +56,7 @@ export function keyboardToUpperCase() {
 
 export function keyDownHandler(e) {
   try {
-    if (e.repeat) return;
-    console.log('keyDownHandler');
+    e.preventDefault();
     const currEl = document.querySelector(`[data=${e.code}]`);
     currEl.classList.add('btn_active');
     if ((e.key === 'Shift' && !e.repeat) || (e.key === 'CapsLock')) {
@@ -77,7 +75,6 @@ export function keyUpHandler(e) {
       // Удивлён что при отпускании  shiftKey===false
       keyboardToUpperCase();
     }
-    console.log('keyUpHandler');
     document.querySelector(`[data=${e.code}]`).classList.remove('btn_active');
   } catch {
     console.error('Хватит отпускать кнопки, которых нет на моей Кавиатуре!');
