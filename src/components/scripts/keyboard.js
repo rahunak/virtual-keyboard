@@ -5,7 +5,7 @@
 // } from './handlers';
 import addEventListenersOnButtons from './EventListeners';
 import {
-  isDelete, isArrow, isFnValue,
+ isFnValue, correctTextInFnBtns,
 } from './helpers';
 import en from './keysEN';
 import ru from './keysRU';
@@ -34,10 +34,10 @@ function createElement(
 
 document.body.append(createElement('h1', 'RSS Виртуальная клавиатура', 'title'));
 document.body.append(createElement('textarea', null, 'main__textarea', 'id', 'textatea'));
-document.body.append(createElement('p', 'Смена языка Shift + Ctrl'));
+document.body.append(createElement('p', 'Смена языка:  левый Alt + Ctrl'));
 
 function changeLanguageInLocalStorage() {
-  console.log('меняю язык. был', localStorage);
+  console.log('был', localStorage);
   if (localStorage.lang === 'en') {
     localStorage.setItem('lang', 'ru');
     console.log('стал', localStorage);
@@ -56,38 +56,40 @@ function createMarkup() {
   for (let i = 0; i < ENG.length; i++) {
     const elemEn = ENG[i];
     const elemRu = RUS[i];
-    const innerEnglishText = (isArrow(elemEn)
-    || elemEn.metaKey
-    || isDelete(elemEn)
-    || elemEn.ctrlKey)
-      ? `${isDelete(elemEn) ? 'Del' : ''}${elemEn.metaKey ? 'Win' : ''}${elemEn.ctrlKey ? 'Ctrl' : ''}`
+
+    const enTextObj = (isFnValue(elemEn.code))
+      ? `${correctTextInFnBtns(elemEn)}`
       : elemEn.key;
-    const innerRussianText = (isArrow(elemRu)
-    || elemRu.metaKey
-    || isDelete(elemRu)
-    || elemRu.ctrlKey)
-      ? `${isDelete(elemRu) ? 'Del' : ''}${elemRu.metaKey ? 'Win' : ''}${elemRu.ctrlKey ? 'Ctrl' : ''}`
-      : elemRu.key;
+
+    const ruTextObj = (isFnValue(elemRu.key))
+      ? `${correctTextInFnBtns(elemRu)}`
+      : elemRu;
+
     const markupElement = createElement(
       'div',
       [
         createElement(
           'span',
           [
-            createElement('span', `${innerRussianText}`, 'caseDown hidden'),
-            createElement('span', `${(isFnValue(elemEn.code)) ? innerRussianText : innerRussianText.toUpperCase()}`, 'caseUp hidden'),
-            createElement('span', `${(isFnValue(elemEn.code)) ? innerRussianText : innerRussianText.toUpperCase()}`, 'caps hidden'),
-            createElement('span', `${innerRussianText}`, 'shiftCaps hidden'),
+            createElement('span', `${(isFnValue(elemEn.code)) ? enTextObj : ruTextObj.key}`, 'caseDown hidden'),
+            createElement('span', `${
+              // eslint-disable-next-line no-nested-ternary
+              (isFnValue(elemEn.code))
+                ? enTextObj
+                : ((ruTextObj.hasOwnProperty('secondValue')) ? ruTextObj.secondValue : ruTextObj.key.toUpperCase())
+            }`, 'caseUp hidden'),
+            createElement('span', `${(isFnValue(elemEn.code)) ? enTextObj : ruTextObj.key.toUpperCase()}`, 'caps hidden'),
+            createElement('span', `${(isFnValue(elemEn.code)) ? enTextObj : ((ruTextObj.hasOwnProperty('secondValue')) ? ruTextObj.secondValue : ruTextObj.key)}`, 'shiftCaps hidden'),
           ],
           'ru hidden',
         ),
         createElement(
           'span',
           [
-            createElement('span', `${innerEnglishText}`, 'caseDown'),
-            createElement('span', `${(isFnValue(elemRu.code)) ? innerEnglishText : innerEnglishText.toUpperCase()}`, 'caseUp hidden'),
-            createElement('span', `${(isFnValue(elemRu.code)) ? innerEnglishText : innerEnglishText.toUpperCase()}`, 'caps hidden'),
-            createElement('span', `${innerEnglishText}`, 'shiftCaps hidden'),
+            createElement('span', `${enTextObj}`, 'caseDown'),
+            createElement('span', `${(isFnValue(elemRu.code)) ? enTextObj : enTextObj.toUpperCase()}`, 'caseUp hidden'),
+            createElement('span', `${(isFnValue(elemRu.code)) ? enTextObj : enTextObj.toUpperCase()}`, 'caps hidden'),
+            createElement('span', `${enTextObj}`, 'shiftCaps hidden'),
           ],
           'en',
         )],
@@ -100,9 +102,19 @@ function createMarkup() {
     document.querySelector('.keyboard').append(markupElement);
   }
 }
+
+function changeLanguageMarkup() {
+  const keysRu = document.querySelectorAll('.ru');
+  keysRu.forEach((el) => el.classList.toggle('hidden'));
+  const keysEn = document.querySelectorAll('.en');
+  keysEn.forEach((el) => el.classList.toggle('hidden'));
+  const caseDown = document.querySelectorAll('.caseDown');
+  caseDown.forEach((el) => el.classList.toggle('hidden'));
+}
+
 function changeLanguage() {
   const pressedKeys = new Set();
-  const keysForChangingLanguage = ['Shift', 'Control'];
+  const keysForChangingLanguage = ['Control', 'Alt'];
 
   document.addEventListener('keydown', (event) => {
     pressedKeys.add(event.key);
@@ -114,8 +126,7 @@ function changeLanguage() {
     }
     pressedKeys.clear();
     changeLanguageInLocalStorage();
-    document.querySelector('.keyboard').remove();
-    createMarkup();
+    changeLanguageMarkup();
   });
   document.addEventListener('keyup', (event) => {
     pressedKeys.delete(event.key);
