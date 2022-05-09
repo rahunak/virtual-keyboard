@@ -146,6 +146,9 @@ function changeLanguage() {
 }
 
 function init() {
+  if (!localStorage.lang) {
+    localStorage.setItem('lang', 'en');
+  }
   createMarkup();
   changeLanguage();
   addEventListenersOnButtons();
