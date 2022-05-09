@@ -57,7 +57,10 @@ module.exports = {
         exclude: /node_modules/,
 
       },
-
+      {
+        test: /\.(mp3|wav|mpe?g|ogg)?$/i,
+        use: 'file-loader',
+      },
     ],
   },
   plugins: [

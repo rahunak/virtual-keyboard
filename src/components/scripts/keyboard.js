@@ -1,10 +1,6 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable no-prototype-builtins */
 
-// eslint-disable-next-line consistent-return
-// import {
-//   keyDownHandler, keyUpHandler, mouseDownHandler, keyboardToUpperCase,
-// } from './handlers';
 import addEventListenersOnButtons from './EventListeners';
 import {
   isFnValue, correctTextInFnBtns,

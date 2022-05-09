@@ -65,6 +65,7 @@ export function keyDownHandler(e) {
   try {
     if (!document.querySelector(`[data=${e.code}]`)) return;
     e.preventDefault();
+
     const currEl = document.querySelector(`[data=${e.code}]`);
     currEl.classList.add('btn_active');
     if ((e.key === 'Shift' && !e.repeat) || (e.key === 'CapsLock')) {
