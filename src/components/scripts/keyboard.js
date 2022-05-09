@@ -40,22 +40,6 @@ function changeLanguageInLocalStorage() {
   }
 }
 
-function createLanguagePartOfButton(langStr, langObj) {
-  const langTextObj = (isFnValue(langObj.code))
-    ? `${correctTextInFnBtns(langObj)}`
-    : langObj;
-  return createElement(
-    'span',
-    [
-      createElement('span', `${langTextObj.key || langTextObj}`, 'caseDown'),
-      createElement('span', `${(isFnValue(langObj.code)) ? langTextObj.key || langTextObj : ((langTextObj.hasOwnProperty('secondValue')) ? langTextObj.secondValue : langTextObj.key.toUpperCase())}`, 'caseUp hidden'),
-      createElement('span', `${(isFnValue(langObj.code)) ? langTextObj.key || langTextObj : langTextObj.key.toUpperCase()}`, 'caps hidden'),
-      createElement('span', `${langTextObj.key || langTextObj}`, 'shiftCaps hidden'),
-    ],
-    `${langStr} `,
-  );
-}
-
 function defLangEn(str) {
   if (localStorage.lang === str) return 'langEn';
 
@@ -92,7 +76,7 @@ function createMarkup() {
           ],
           `ru ${defLangEn('ru')}`,
         ),
-        // createLanguagePartOfButton('en', elemEn),
+
         createElement(
           'span',
           [
