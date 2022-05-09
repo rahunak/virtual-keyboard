@@ -57,7 +57,7 @@ export function keyboardToUpperCase() {
 
 export function keyDownHandler(e) {
   try {
-    // console.log('keyDownHandler');
+    e.preventDefault();
     const currEl = document.querySelector(`[data=${e.code}]`);
     currEl.classList.add('btn_active');
     if ((e.key === 'Shift' && !e.repeat) || (e.key === 'CapsLock')) {

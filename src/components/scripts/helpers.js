@@ -12,6 +12,7 @@ export function isFnValue(val) {
 }
 
 function isArrow(el) { return !!(el.code === 'ArrowUp' || el.code === 'ArrowLeft' || el.code === 'ArrowDown' || el.code === 'ArrowRight'); }
+
 export function correctTextInFnBtns(el) {
   if (el.code === 'Delete') return 'Del';
   if (el.key === 'CapsLock') return 'CapsLock';
