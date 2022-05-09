@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable no-prototype-builtins */
-/* eslint-disable no-console */
+
 // eslint-disable-next-line consistent-return
 // import {
 //   keyDownHandler, keyUpHandler, mouseDownHandler, keyboardToUpperCase,
@@ -33,18 +33,14 @@ document.body.append(createElement('h1', 'RSS Виртуальная клави�
 document.body.append(createElement('textarea', null, 'main__textarea', 'id', 'textatea'));
 
 function changeLanguageInLocalStorage() {
-  console.log('был', localStorage);
   if (localStorage.lang === 'en') {
     localStorage.setItem('lang', 'ru');
-    console.log('стал', localStorage);
   } else if (localStorage.lang === 'ru') {
     localStorage.setItem('lang', 'en');
-    console.log('стал', localStorage);
   }
 }
 
 function createLanguagePartOfButton(langStr, langObj) {
-  console.log('createLanguagePartOfButton', langStr, '+', langObj);
   const langTextObj = (isFnValue(langObj.code))
     ? `${correctTextInFnBtns(langObj)}`
     : langObj;
@@ -82,7 +78,6 @@ function createMarkup() {
     const ruTextObj = (isFnValue(elemRu.code))
       ? `${correctTextInFnBtns(elemRu)}`
       : elemRu;
-    console.log("localStorage.lang==='en'", localStorage.lang === 'en');
 
     const markupElement = createElement(
       'div',
@@ -156,15 +151,7 @@ function init() {
   addEventListenersOnButtons();
 }
 
-console.log('localStorage.lang перед запуском init', localStorage.lang);
 init();
 
 document.body.append(createElement('p', 'Клавиатура создана в операционной системе Windows'));
 document.body.append(createElement('p', 'Смена языка:  левый Alt + Ctrl'));
-
-// document.addEventListener('keydown', (e) => {
-//   console.log('keydown', e);
-// });
-// document.addEventListener('keyup', (e) => {
-//   console.log('keyup', e);
-// });
