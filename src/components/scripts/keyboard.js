@@ -28,7 +28,7 @@ function createElement(
   if (otherAttr && otherAttrValue) { el.setAttribute(otherAttr, otherAttrValue); }
   return el;
 }
-
+document.title = 'Virtual Keyboard';
 document.body.append(createElement('h1', 'RSS Виртуальная клавиатура', 'title'));
 document.body.append(createElement('textarea', null, 'main__textarea', 'id', 'textatea'));
 
