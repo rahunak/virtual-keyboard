@@ -11,13 +11,19 @@ function pressBtn(val) {
   } else if (val === 'Del' || val === 'Delete') {
     const textarea = document.querySelector('.main__textarea');
     const newText = textarea.value.split('');
-    newText.splice(textarea.selectionEnd, 1);
+    const positionCursor = textarea.selectionEnd;
+    newText.splice(positionCursor, 1);
     textarea.value = newText.join('');
+    textarea.selectionStart = positionCursor;
+    textarea.selectionEnd = positionCursor;
   } else if (val === 'Backspace') {
     const textarea = document.querySelector('.main__textarea');
     const newText = textarea.value.split('');
-    newText.splice(textarea.selectionEnd - 1, 1);
+    const positionCursor = textarea.selectionEnd;
+    newText.splice(positionCursor - 1, 1);
     textarea.value = newText.join('');
+    textarea.selectionStart = positionCursor - 1;
+    textarea.selectionEnd = positionCursor - 1;
   }
 }
 
@@ -39,6 +45,7 @@ function pressArrow(val) {
 export function mouseDownHandler(e) {
   try {
     if (!e.target.closest('.btn')) return;
+    e.preventDefault();
     const currValue = e.target.closest('.btn').innerText;
     pressArrow(e.target.closest('.btn').getAttribute('data'));
     pressBtn(currValue);
