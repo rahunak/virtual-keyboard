@@ -1,10 +1,6 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable no-prototype-builtins */
 
-// eslint-disable-next-line consistent-return
-// import {
-//   keyDownHandler, keyUpHandler, mouseDownHandler, keyboardToUpperCase,
-// } from './handlers';
 import addEventListenersOnButtons from './EventListeners';
 import {
   isFnValue, correctTextInFnBtns,
@@ -28,7 +24,7 @@ function createElement(
   if (otherAttr && otherAttrValue) { el.setAttribute(otherAttr, otherAttrValue); }
   return el;
 }
-
+document.title = 'Virtual Keyboard';
 document.body.append(createElement('h1', 'RSS Виртуальная клавиатура', 'title'));
 document.body.append(createElement('textarea', null, 'main__textarea', 'id', 'textatea'));
 
@@ -38,22 +34,6 @@ function changeLanguageInLocalStorage() {
   } else if (localStorage.lang === 'ru') {
     localStorage.setItem('lang', 'en');
   }
-}
-
-function createLanguagePartOfButton(langStr, langObj) {
-  const langTextObj = (isFnValue(langObj.code))
-    ? `${correctTextInFnBtns(langObj)}`
-    : langObj;
-  return createElement(
-    'span',
-    [
-      createElement('span', `${langTextObj.key || langTextObj}`, 'caseDown'),
-      createElement('span', `${(isFnValue(langObj.code)) ? langTextObj.key || langTextObj : ((langTextObj.hasOwnProperty('secondValue')) ? langTextObj.secondValue : langTextObj.key.toUpperCase())}`, 'caseUp hidden'),
-      createElement('span', `${(isFnValue(langObj.code)) ? langTextObj.key || langTextObj : langTextObj.key.toUpperCase()}`, 'caps hidden'),
-      createElement('span', `${langTextObj.key || langTextObj}`, 'shiftCaps hidden'),
-    ],
-    `${langStr} `,
-  );
 }
 
 function defLangEn(str) {
@@ -92,7 +72,7 @@ function createMarkup() {
           ],
           `ru ${defLangEn('ru')}`,
         ),
-        // createLanguagePartOfButton('en', elemEn),
+
         createElement(
           'span',
           [
@@ -146,6 +126,9 @@ function changeLanguage() {
 }
 
 function init() {
+  if (!localStorage.lang) {
+    localStorage.setItem('lang', 'en');
+  }
   createMarkup();
   changeLanguage();
   addEventListenersOnButtons();

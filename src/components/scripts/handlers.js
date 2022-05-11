@@ -8,8 +8,16 @@ function pressBtn(val) {
     document.querySelector('.main__textarea').value += ' ';
   } else if (val === 'Tab') {
     document.querySelector('.main__textarea').value += '\t';
-  } else if (val === 'Del' || val === 'Delete' || val === 'Backspace') {
-    document.querySelector('.main__textarea').value = document.querySelector('.main__textarea').value.slice(0, document.querySelector('.main__textarea').value.length - 1);
+  } else if (val === 'Del' || val === 'Delete') {
+    const textarea = document.querySelector('.main__textarea');
+    const newText = textarea.value.split('');
+    newText.splice(textarea.selectionEnd, 1);
+    textarea.value = newText.join('');
+  } else if (val === 'Backspace') {
+    const textarea = document.querySelector('.main__textarea');
+    const newText = textarea.value.split('');
+    newText.splice(textarea.selectionEnd - 1, 1);
+    textarea.value = newText.join('');
   }
 }
 
@@ -30,12 +38,13 @@ function pressArrow(val) {
 
 export function mouseDownHandler(e) {
   try {
+    if (!e.target.closest('.btn')) return;
     const currValue = e.target.closest('.btn').innerText;
+    pressArrow(e.target.closest('.btn').getAttribute('data'));
     pressBtn(currValue);
-
     if (!isFnValue(currValue)) { document.querySelector('.main__textarea').value += currValue; }
-  } catch {
-    console.error('Это не ошибка,происходит обработка события  mouseDownHandler');
+  } catch (err) {
+    console.error('Это не ошибка,происходит обработка события  mouseDownHandler', err);
   }
 }
 export function keyboardToUpperCase() {
@@ -49,14 +58,16 @@ export function keyboardToUpperCase() {
         }
       }
     });
-  } catch {
-    console.error('Ошибка тут keyboardToUpperCase');
+  } catch (err) {
+    console.error('Ошибка тут keyboardToUpperCase', err);
   }
 }
 
 export function keyDownHandler(e) {
   try {
+    if (!document.querySelector(`[data=${e.code}]`)) return;
     e.preventDefault();
+
     const currEl = document.querySelector(`[data=${e.code}]`);
     currEl.classList.add('btn_active');
     if ((e.key === 'Shift' && !e.repeat) || (e.key === 'CapsLock')) {
@@ -64,6 +75,7 @@ export function keyDownHandler(e) {
     }
     pressBtn(e.code);
     pressArrow(e.code);
+
     if (!isFnValue(e.code)) { document.querySelector('.main__textarea').value += currEl.innerText; }
   } catch {
     console.error('Хватит нажимать кнопки, которых нет на моей Кавиатуре!');
@@ -75,8 +87,9 @@ export function keyUpHandler(e) {
       // Удивлён что при отпускании  shiftKey===false
       keyboardToUpperCase();
     }
+    if (!document.querySelector(`[data=${e.code}]`)) return;
     document.querySelector(`[data=${e.code}]`).classList.remove('btn_active');
-  } catch {
-    console.error('Хватит отпускать кнопки, которых нет на моей Кавиатуре!');
+  } catch (err) {
+    console.error('Хватит отпускать кнопки, которых нет на моей Кавиатуре!', err);
   }
 }
