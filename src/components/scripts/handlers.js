@@ -15,7 +15,10 @@ function pressBtn(val) {
     newText.splice(textarea.selectionEnd, 1);
     textarea.value = newText.join('');
   } else if (val === 'Backspace') {
-    document.querySelector('.main__textarea').value = document.querySelector('.main__textarea').value.slice(0, document.querySelector('.main__textarea').value.length - 1);
+    const textarea = document.querySelector('.main__textarea');
+    const newText = textarea.value.split('');
+    newText.splice(textarea.selectionEnd - 1, 1);
+    textarea.value = newText.join('');
   }
 }
 
