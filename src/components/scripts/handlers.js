@@ -10,7 +10,6 @@ function pressBtn(val) {
     document.querySelector('.main__textarea').value += '\t';
   } else if (val === 'Del' || val === 'Delete') {
     const textarea = document.querySelector('.main__textarea');
-    console.log('textarea.selectionEnd', textarea.selectionEnd);
     const newText = textarea.value.split('');
     newText.splice(textarea.selectionEnd, 1);
     textarea.value = newText.join('');
