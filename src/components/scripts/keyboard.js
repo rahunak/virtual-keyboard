@@ -26,7 +26,7 @@ function createElement(
 }
 document.title = 'Virtual Keyboard';
 document.body.append(createElement('h1', 'RSS Виртуальная клавиатура', 'title'));
-document.body.append(createElement('textarea', null, 'main__textarea', 'id', 'textatea'));
+document.body.append(createElement('textarea', null, 'main__textarea', 'id', 'textatea', 'placeholder', 'What have your mind?'));
 
 function changeLanguageInLocalStorage() {
   if (localStorage.lang === 'en') {
