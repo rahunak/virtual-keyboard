@@ -2,43 +2,39 @@
 import { isFnValue } from './helpers';
 
 function pressBtn(val) {
+  const textarea = document.querySelector('.main__textarea');
+  const newText = textarea.value.split('');
+  const positionCursor = textarea.selectionEnd;
+  function addSymbol(symbol) {
+    newText.splice(positionCursor, 0, symbol);
+    textarea.value = newText.join('');
+    textarea.selectionStart = positionCursor + 1;
+    textarea.selectionEnd = positionCursor + 1;
+  }
   if (val === 'Enter') {
-    document.querySelector('.main__textarea').value += '\n';
+    addSymbol('\n');
   } else if (val === 'Space' || val === '') {
-    document.querySelector('.main__textarea').value += ' ';
+    addSymbol(' ');
   } else if (val === 'Tab') {
-    document.querySelector('.main__textarea').value += '\t';
+    addSymbol('\t');
   } else if (val === 'Del' || val === 'Delete') {
-    const textarea = document.querySelector('.main__textarea');
-    const newText = textarea.value.split('');
-    const positionCursor = textarea.selectionEnd;
     newText.splice(positionCursor, 1);
     textarea.value = newText.join('');
     textarea.selectionStart = positionCursor;
     textarea.selectionEnd = positionCursor;
   } else if (val === 'Backspace') {
-    const textarea = document.querySelector('.main__textarea');
-    const newText = textarea.value.split('');
-    const positionCursor = textarea.selectionEnd;
     newText.splice(positionCursor - 1, 1);
     textarea.value = newText.join('');
     textarea.selectionStart = positionCursor - 1;
     textarea.selectionEnd = positionCursor - 1;
-  }
-}
-
-function pressArrow(val) {
-  if (val === 'ArrowDown') {
-    document.querySelector('.main__textarea').value += '\u2BC6';
-  }
-  if (val === 'ArrowLeft') {
-    document.querySelector('.main__textarea').value += '\u2BC7';
-  }
-  if (val === 'ArrowRight') {
-    document.querySelector('.main__textarea').value += '\u2BC8';
-  }
-  if (val === 'ArrowUp') {
-    document.querySelector('.main__textarea').value += '\u2BC5';
+  } else if (val === 'ArrowUp') {
+    addSymbol('\u2BC5');
+  } else if (val === 'ArrowDown') {
+    addSymbol('\u2BC6');
+  } else if (val === 'ArrowLeft') {
+    addSymbol('\u2BC7');
+  } else if (val === 'ArrowRight') {
+    addSymbol('\u2BC8');
   }
 }
 
@@ -47,7 +43,7 @@ export function mouseDownHandler(e) {
     if (!e.target.closest('.btn')) return;
     e.preventDefault();
     const currValue = e.target.closest('.btn').innerText;
-    pressArrow(e.target.closest('.btn').getAttribute('data'));
+    pressBtn(e.target.closest('.btn').getAttribute('data'));
     pressBtn(currValue);
     if (!isFnValue(currValue)) { document.querySelector('.main__textarea').value += currValue; }
   } catch (err) {
@@ -81,7 +77,6 @@ export function keyDownHandler(e) {
       keyboardToUpperCase();
     }
     pressBtn(e.code);
-    pressArrow(e.code);
 
     if (!isFnValue(e.code)) { document.querySelector('.main__textarea').value += currEl.innerText; }
   } catch {
