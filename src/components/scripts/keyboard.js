@@ -18,12 +18,13 @@ function createElement(
   otherAttrValue = null,
 ) {
   const el = document.createElement(elem);
-  if (innerHTML)el.append(...innerHTML);
+  if (innerHTML) el.append(...innerHTML);
   if (classes) el.classList.add(...classes.split(' '));
   if (attr && attrValue) { el.setAttribute(attr, attrValue); }
   if (otherAttr && otherAttrValue) { el.setAttribute(otherAttr, otherAttrValue); }
   return el;
 }
+document.head.insertAdjacentHTML('beforeend', '<link rel="shortcut icon" href="keyboard.ico" type="image/x-icon">');
 document.title = 'Virtual Keyboard';
 document.body.append(createElement('h1', 'RSS Виртуальная клавиатура', 'title'));
 document.body.append(createElement('textarea', null, 'main__textarea', 'id', 'textatea', 'placeholder', 'What have your mind?'));

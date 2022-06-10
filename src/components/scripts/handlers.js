@@ -2,6 +2,7 @@
 import { isFnValue } from './helpers';
 
 function pressBtn(val) {
+  console.log('val->>>', val);
   const textarea = document.querySelector('.main__textarea');
   const newText = textarea.value.split('');
   const positionCursor = textarea.selectionEnd;
@@ -40,11 +41,11 @@ function pressBtn(val) {
 
 export function mouseDownHandler(e) {
   try {
+    console.log(' e.target.closest(".btn")->>>', e.target.closest('.btn'));
     if (!e.target.closest('.btn')) return;
     e.preventDefault();
     const currValue = e.target.closest('.btn').innerText;
     pressBtn(e.target.closest('.btn').getAttribute('data'));
-    pressBtn(currValue);
     if (!isFnValue(currValue)) { document.querySelector('.main__textarea').value += currValue; }
   } catch (err) {
     console.error('Это не ошибка,происходит обработка события  mouseDownHandler', err);
