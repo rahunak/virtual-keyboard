@@ -66,7 +66,9 @@ export function mouseDownHandler(e) {
     e.preventDefault();
     const currValue = e.target.closest('.btn').innerText;
     pressBtn(e.target.closest('.btn').getAttribute('data'));
-    if (!isFnValue(currValue)) { document.querySelector('.main__textarea').value += currValue; }
+    if (!isFnValue(currValue)) {
+      addSymbol(currValue);
+    }
   } catch (err) {
     console.error('Это не ошибка,происходит обработка события  mouseDownHandler', err);
   }
