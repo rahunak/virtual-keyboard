@@ -3,7 +3,6 @@ import { isFnValue } from './helpers';
 
 export function keyboardToUpperCase() {
   try {
-    console.log('keyboardToUpperCase');
     document.querySelectorAll('[key="key"]').forEach((el) => {
       // eslint-disable-next-line no-restricted-syntax
       for (const child of el.children) {
@@ -52,7 +51,6 @@ function pressBtn(val) {
   } else if (val === 'ArrowRight') {
     addSymbol('\u2BC8');
   } else if (val === 'CapsLock') {
-    console.log("val === 'CapsLock'");
     document.querySelector(`[data=${val}]`).classList.toggle('btn_active');
     keyboardToUpperCase();
   }
@@ -77,6 +75,10 @@ export function keyDownHandler(e) {
     const currEl = document.querySelector(`[data=${e.code}]`);
     if (e.code !== 'CapsLock') { currEl.classList.add('btn_active'); }
 
+    if (e.key === 'Shift' && !e.repeat) {
+      // Обрабатываю нажатие Shift здесь т.к. необходимо проверять условие e.repeat-зажатие кнопки
+      keyboardToUpperCase();
+    }
     pressBtn(e.code);
 
     if (!isFnValue(e.code)) { document.querySelector('.main__textarea').value += currEl.innerText; }
