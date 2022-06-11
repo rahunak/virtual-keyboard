@@ -26,11 +26,5 @@ function addEventListenersOnButtons() {
     ShiftRight.classList.remove('btn_active');
     keyboardToUpperCase();
   });
-
-  const CapsLock = document.body.querySelector('[data="CapsLock"]');
-  CapsLock.addEventListener('click', () => {
-    CapsLock.classList.toggle('btn_active');
-    keyboardToUpperCase();
-  });
 }
 export default addEventListenersOnButtons;
