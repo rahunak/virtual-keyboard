@@ -16,16 +16,20 @@ export function keyboardToUpperCase() {
     console.error('Ошибка тут keyboardToUpperCase', err);
   }
 }
+function addSymbol(symbol) {
+  const textarea = document.querySelector('.main__textarea');
+  const newText = textarea.value.split('');
+  const positionCursor = textarea.selectionEnd;
+  newText.splice(positionCursor, 0, symbol);
+  textarea.value = newText.join('');
+  textarea.selectionStart = positionCursor + 1;
+  textarea.selectionEnd = positionCursor + 1;
+}
 function pressBtn(val) {
   const textarea = document.querySelector('.main__textarea');
   const newText = textarea.value.split('');
   const positionCursor = textarea.selectionEnd;
-  function addSymbol(symbol) {
-    newText.splice(positionCursor, 0, symbol);
-    textarea.value = newText.join('');
-    textarea.selectionStart = positionCursor + 1;
-    textarea.selectionEnd = positionCursor + 1;
-  }
+
   if (val === 'Enter') {
     addSymbol('\n');
   } else if (val === 'Space' || val === '') {
@@ -81,7 +85,10 @@ export function keyDownHandler(e) {
     }
     pressBtn(e.code);
 
-    if (!isFnValue(e.code)) { document.querySelector('.main__textarea').value += currEl.innerText; }
+    if (!isFnValue(e.code)) {
+      console.log('нажал на кнопку', currEl.innerText);
+      addSymbol(currEl.innerText);
+    }
   } catch {
     console.error('Хватит нажимать кнопки, которых нет на моей Кавиатуре!');
   }
